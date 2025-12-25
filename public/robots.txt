@@ -1,2 +1,2 @@
 User-Agent: *
-Sitemap: http://localhost:1313/sitemap.xml
+Sitemap: https://schwidola0607.github.io/khoa-blog/sitemap.xml

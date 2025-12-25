@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Khoa&#39;s blog</title>
-    <link>http://localhost:1313/</link>
+    <link>https://schwidola0607.github.io/khoa-blog/</link>
     <description>Recent content on Khoa&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 23 Dec 2025 21:35:22 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://schwidola0607.github.io/khoa-blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
-      <link>http://localhost:1313/about/</link>
+      <link>https://schwidola0607.github.io/khoa-blog/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/about/</guid>
+      <guid>https://schwidola0607.github.io/khoa-blog/about/</guid>
       <description>&lt;h2 id=&#34;about&#34;&gt;About&lt;/h2&gt;&#xA;&lt;p&gt;I work in machine learning systems and semi-frequently blog or tweet about things. I also like to talk about hardware accelerators and model architecture even though I know next to nothing about them!&lt;/p&gt;&#xA;&lt;p&gt;I am currently employed by an &lt;a href=&#34;https://www.augmentcode.com/&#34;&gt;AI coding agent company&lt;/a&gt; and has since become quite opinionated about AI coding&lt;/p&gt;&#xA;&lt;h2 id=&#34;links&#34;&gt;Links&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://x.com/kwafam7&#34;&gt;Twitter&lt;/a&gt;&lt;br&gt;&#xA;&lt;a href=&#34;https://www.linkedin.com/in/khoa-pham-b3b290176/&#34;&gt;Linkedin&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Sequence Parallelism for Inference: Part 1</title>
-      <link>http://localhost:1313/sequence-parallelism-for-inference-part-1/</link>
+      <link>https://schwidola0607.github.io/khoa-blog/sequence-parallelism-for-inference-part-1/</link>
       <pubDate>Tue, 23 Dec 2025 21:35:22 +0000</pubDate>
-      <guid>http://localhost:1313/sequence-parallelism-for-inference-part-1/</guid>
+      <guid>https://schwidola0607.github.io/khoa-blog/sequence-parallelism-for-inference-part-1/</guid>
       <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://blog.ezyang.com/2025/08/the-parallelism-mesh-zoo/&#34;&gt;Nd+ parallelism techniques&lt;/a&gt; are often invented for training first, then adapted for inference. Most techniques have seen great success in today&amp;rsquo;s inference world (both individually and together). However, Sequence Parallelism has not seen wide adoption in the open source world. If you look at vLLM or SGLang today, sequence parallelism is either in not-so-active development or completely deprioritized.&lt;/p&gt;&#xA;&lt;p&gt;As a huge fan of low time-to-first-token (TTFT) long-sequence inference (motivated by my work at &lt;a href=&#34;https://www.augmentcode.com/&#34;&gt;Augment Code&lt;/a&gt;—check us out!), this greatly saddens me. This blog series aims to bring back some love for Sequence Parallelism for Inference.&lt;/p&gt;</description>
     </item>
   </channel>

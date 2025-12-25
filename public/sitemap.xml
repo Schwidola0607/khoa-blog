@@ -2,19 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/about/</loc>
+    <loc>https://schwidola0607.github.io/khoa-blog/about/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/</loc>
+    <loc>https://schwidola0607.github.io/khoa-blog/blog/</loc>
     <lastmod>2025-12-23T21:35:22+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://schwidola0607.github.io/khoa-blog/</loc>
     <lastmod>2025-12-23T21:35:22+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/sequence-parallelism-for-inference-part-1/</loc>
+    <loc>https://schwidola0607.github.io/khoa-blog/sequence-parallelism-for-inference-part-1/</loc>
     <lastmod>2025-12-23T21:35:22+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://schwidola0607.github.io/khoa-blog/categories/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://schwidola0607.github.io/khoa-blog/tags/</loc>
   </url>
 </urlset>
