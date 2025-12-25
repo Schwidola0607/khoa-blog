@@ -1,7 +1,14 @@
 baseURL = 'https://example.org/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
-theme = 'ananke'
+title = "Khoa's blog"
+theme = 'hugo-bearblog'
+
+# Generate a nice robots.txt for SEO
+enableRobotsTXT = true
+
+# Configure blog permalinks (Bearblog-style URLs)
+[permalinks]
+  blog = "/:slug/"
 
 [params]
   math = true

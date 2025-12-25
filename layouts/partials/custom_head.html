@@ -1,0 +1,151 @@
+{{ if .Param "math" }}
+  {{ partialCached "math.html" . }}
+{{ end }}
+
+<style>
+  /* Light theme optimized for transparent images */
+  /* Override theme's dark mode - force light theme always */
+  :root {
+    --background-color: #ffffff !important;
+    --heading-color: #1a1a1a !important;
+    --text-color: #333333 !important;
+    --link-color: #0066cc !important;
+    --visited-color: #6633cc !important;
+    --blockquote-color: #444444 !important;
+    --code-background: #f5f5f5 !important;
+    --code-border: #dddddd !important;
+  }
+
+  /* Disable dark mode completely */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #ffffff !important;
+      --heading-color: #1a1a1a !important;
+      --text-color: #333333 !important;
+      --link-color: #0066cc !important;
+      --visited-color: #6633cc !important;
+      --blockquote-color: #444444 !important;
+      --code-background: #f5f5f5 !important;
+      --code-border: #dddddd !important;
+    }
+  }
+
+  /* Force light theme on body */
+  body {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+  }
+
+  /* Ensure math formulas are readable */
+  .katex {
+    font-size: 1.1em;
+    color: var(--text-color);
+  }
+
+  .katex-display {
+    margin: 1.5em 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    text-align: center;
+  }
+
+  .katex-display > .katex {
+    text-align: left;
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  /* Ensure inline math doesn't break line spacing */
+  .katex-html {
+    white-space: nowrap;
+  }
+
+  /* Math formulas styling */
+  .katex .base {
+    color: var(--text-color);
+  }
+
+  /* Better code block styling */
+  code {
+    background-color: var(--code-background);
+    border: 1px solid var(--code-border);
+    padding: 2px 6px;
+  }
+
+  pre code {
+    background-color: var(--code-background);
+    border: 1px solid var(--code-border);
+    padding: 10px;
+    display: block;
+    overflow-x: auto;
+  }
+
+  /* Better blockquote styling */
+  blockquote {
+    border-left: 3px solid var(--link-color);
+    background-color: var(--code-background);
+    padding: 10px 20px;
+    margin: 1em 0;
+  }
+
+  /* Ensure images in flex containers work well */
+  figure {
+    margin: 1.5em 0;
+  }
+
+  figcaption {
+    font-size: 0.9em;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin-top: 0.5em;
+  }
+
+  /* Optimize images for transparent backgrounds */
+  img {
+    background-color: transparent;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Ensure transparent images look good on white background */
+  figure img {
+    margin: 0 auto;
+  }
+
+  /* Add subtle shadow to images for better visibility if needed */
+  img:not([style*="display: inline"]) {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Better list styling */
+  ul, ol {
+    padding-left: 1.5em;
+  }
+
+  li {
+    margin: 0.5em 0;
+  }
+
+  /* Ensure proper spacing for math in paragraphs */
+  p {
+    margin: 1em 0;
+  }
+
+  /* Better heading spacing */
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  h1 {
+    border-bottom: 2px solid var(--code-border);
+    padding-bottom: 0.3em;
+  }
+
+  h2 {
+    border-bottom: 1px solid var(--code-border);
+    padding-bottom: 0.2em;
+  }
+</style>
+

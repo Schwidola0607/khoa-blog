@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Khoa&#39;s blog</title>
-    <link>http://localhost:1313/</link>
-    <description>Recent content on Khoa&#39;s blog</description>
+    <title>Blog on Khoa&#39;s blog</title>
+    <link>http://localhost:1313/blog/</link>
+    <description>Recent content in Blog on Khoa&#39;s blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 23 Dec 2025 21:35:22 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>About</title>
-      <link>http://localhost:1313/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/about/</guid>
-      <description>&lt;h2 id=&#34;about&#34;&gt;About&lt;/h2&gt;&#xA;&lt;p&gt;I work in machine learning systems and semi-frequently blog or tweet about things. I also like to talk about hardware accelerators and model architecture even though I know next to nothing about them!&lt;/p&gt;&#xA;&lt;p&gt;I am currently employed by an &lt;a href=&#34;https://www.augmentcode.com/&#34;&gt;AI coding agent company&lt;/a&gt; and has since become quite opinionated about AI coding&lt;/p&gt;&#xA;&lt;h2 id=&#34;links&#34;&gt;Links&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://x.com/kwafam7&#34;&gt;Twitter&lt;/a&gt;&lt;br&gt;&#xA;&lt;a href=&#34;https://www.linkedin.com/in/khoa-pham-b3b290176/&#34;&gt;Linkedin&lt;/a&gt;&lt;/p&gt;</description>
-    </item>
+    <atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Sequence Parallelism for Inference: Part 1</title>
       <link>http://localhost:1313/sequence-parallelism-for-inference-part-1/</link>

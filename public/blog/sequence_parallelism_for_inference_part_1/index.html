@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,13 +13,13 @@ As a huge fan of low time-to-first-token (TTFT) long-sequence inference (motivat
 <meta name="keywords" content="" />
 
 
-<meta property="og:url" content="http://localhost:1313/posts/sequence_parallelism_for_inference_part_1/">
+<meta property="og:url" content="https://example.org/blog/sequence_parallelism_for_inference_part_1/">
   <meta property="og:site_name" content="My New Hugo Site">
   <meta property="og:title" content="Sequence Parallelism for Inference: Part 1">
   <meta property="og:description" content="Introduction Nd&#43; parallelism techniques are often invented for training first, then adapted for inference. Most techniques have seen great success in today’s inference world (both individually and together). However, Sequence Parallelism has not seen wide adoption in the open source world. If you look at vLLM or SGLang today, sequence parallelism is either in not-so-active development or completely deprioritized. As a huge fan of low time-to-first-token (TTFT) long-sequence inference (motivated by my work at Augment Code—check us out!), this greatly saddens me. This blog series aims to bring back some love for Sequence Parallelism for Inference.">
   <meta property="og:locale" content="en_us">
   <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
+    <meta property="article:section" content="blog">
     <meta property="article:published_time" content="2025-12-23T21:35:22+00:00">
     <meta property="article:modified_time" content="2025-12-23T21:35:22+00:00">
 
@@ -194,6 +194,187 @@ As a huge fan of low time-to-first-token (TTFT) long-sequence inference (motivat
 
 </style>
 
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css"
+  integrity="sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi"
+  crossorigin="anonymous"
+>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.js"
+  integrity="sha384-J+9dG2KMoiR9hqcFao0IBLwxt6zpcyN68IgwzsCSkbreXUjmNVRhPFTssqdSGjwQ"
+  crossorigin="anonymous">
+</script>
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/contrib/auto-render.min.js"
+  integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh"
+  crossorigin="anonymous">
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    
+    if (typeof renderMathInElement !== 'undefined') {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: '\\[', right: '\\]', display: true},   
+          {left: '$$', right: '$$', display: true},     
+          {left: '\\(', right: '\\)', display: false},  
+          {left: '$', right: '$', display: false},      
+        ],
+        throwOnError: false,
+        strict: false
+      });
+    } else {
+      
+      setTimeout(function() {
+        if (typeof renderMathInElement !== 'undefined') {
+          renderMathInElement(document.body, {
+            delimiters: [
+              {left: '\\[', right: '\\]', display: true},
+              {left: '$$', right: '$$', display: true},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '$', right: '$', display: false},
+            ],
+            throwOnError: false,
+            strict: false
+          });
+        }
+      }, 100);
+    }
+  });
+</script>
+
+
+
+
+<style>
+   
+  :root {
+    --background-color: #fafafa;
+    --heading-color: #2c3e50;
+    --text-color: #34495e;
+    --link-color: #3498db;
+    --visited-color: #9b59b6;
+    --blockquote-color: #555;
+    --code-background: #f4f4f4;
+    --code-border: #e0e0e0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #1a1a1a;
+      --heading-color: #e8e8e8;
+      --text-color: #d0d0d0;
+      --link-color: #5dade2;
+      --visited-color: #bb8fce;
+      --blockquote-color: #b0b0b0;
+      --code-background: #2a2a2a;
+      --code-border: #404040;
+    }
+  }
+
+   
+  .katex {
+    font-size: 1.1em;
+    color: var(--text-color);
+  }
+
+  .katex-display {
+    margin: 1.5em 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    text-align: center;
+  }
+
+  .katex-display > .katex {
+    text-align: left;
+    display: inline-block;
+    max-width: 100%;
+  }
+
+   
+  .katex-html {
+    white-space: nowrap;
+  }
+
+   
+  @media (prefers-color-scheme: dark) {
+    .katex {
+      color: #e8e8e8;
+    }
+    .katex .base {
+      color: #e8e8e8;
+    }
+  }
+
+   
+  code {
+    background-color: var(--code-background);
+    border: 1px solid var(--code-border);
+    padding: 2px 6px;
+  }
+
+  pre code {
+    background-color: var(--code-background);
+    border: 1px solid var(--code-border);
+    padding: 10px;
+    display: block;
+    overflow-x: auto;
+  }
+
+   
+  blockquote {
+    border-left: 3px solid var(--link-color);
+    background-color: var(--code-background);
+    padding: 10px 20px;
+    margin: 1em 0;
+  }
+
+   
+  figure {
+    margin: 1.5em 0;
+  }
+
+  figcaption {
+    font-size: 0.9em;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin-top: 0.5em;
+  }
+
+   
+  ul, ol {
+    padding-left: 1.5em;
+  }
+
+  li {
+    margin: 0.5em 0;
+  }
+
+   
+  p {
+    margin: 1em 0;
+  }
+
+   
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  h1 {
+    border-bottom: 2px solid var(--code-border);
+    padding-bottom: 0.3em;
+  }
+
+  h2 {
+    border-bottom: 1px solid var(--code-border);
+    padding-bottom: 0.2em;
+  }
+</style>
+
 </head>
 
 <body>
@@ -201,9 +382,20 @@ As a huge fan of low time-to-first-token (TTFT) long-sequence inference (motivat
   <h2>My New Hugo Site</h2>
 </a>
 <nav>
+<a href="/blog/">Blog</a>
+
 </nav>
 </header>
   <main>
+
+<h1>Sequence Parallelism for Inference: Part 1</h1>
+<p>
+  <i>
+    <time datetime='2025-12-23'>
+      23 Dec, 2025
+    </time>
+  </i>
+</p>
 
 <content>
   <h1 id="introduction">Introduction</h1>

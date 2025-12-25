@@ -2,18 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on My New Hugo Site</title>
-    <link>https://example.org/posts/</link>
+    <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on My New Hugo Site</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 23 Dec 2025 21:35:22 +0000</lastBuildDate>
-    <atom:link href="https://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Sequence Parallelism for Inference: Part 1</title>
-      <link>https://example.org/posts/sequence_parallelism_for_inference_part_1/</link>
-      <pubDate>Tue, 23 Dec 2025 21:35:22 +0000</pubDate>
-      <guid>https://example.org/posts/sequence_parallelism_for_inference_part_1/</guid>
-      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://blog.ezyang.com/2025/08/the-parallelism-mesh-zoo/&#34;&gt;Nd+ parallelism techniques&lt;/a&gt; are often invented for training first, then adapted for inference. Most techniques have seen great success in today&amp;rsquo;s inference world (both individually and together). However, Sequence Parallelism has not seen wide adoption in the open source world. If you look at vLLM or SGLang today, sequence parallelism is either in not-so-active development or completely deprioritized.&#xA;As a huge fan of low time-to-first-token (TTFT) long-sequence inference (motivated by my work at &lt;a href=&#34;https://www.augmentcode.com/&#34;&gt;Augment Code&lt;/a&gt;—check us out!), this greatly saddens me. This blog series aims to bring back some love for Sequence Parallelism for Inference.&lt;/p&gt;</description>
-    </item>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
