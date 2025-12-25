@@ -28,6 +28,8 @@ This blog series solely focus on prefill time-to-first-token. If you care about 
 
 - $H$ is hidden dimension, $H = nq \times d$ 
 
+- $\ll$ means order of magnitude smaller
+
 
 # What is Sequence Parallelism (SP)?
 In one sentence: sequence parallelism shards the input along the sequence dimension across devices, and subsequent operations—such as ResidualAdd, LayerNorm, and MatMuls—are performed on these partitioned sequences. Attention is the only exception, where tokens are dependent (causal) and often require either full KV and/or full Q for computation. 
@@ -59,7 +61,7 @@ Furthermore, the communication overhead is significantly lower than TP:
 
 - For Ring All-Gather, the per-device communication volume is $\frac{(p - 1) \times N }{p}$
 
-- In this case, $N = B \times T \times 2nkv \times d$. For GQA, $nkv \times d << H = nq \times d$
+- In this case, $N = B \times T \times 2nkv \times d$. For GQA, $nkv \times d \ll H = nq \times d$
 
 **Cons**: Vanilla Sequence Parallelism introduces attention computation imbalance. The rightmost portion of Q must attend to *all* of KV, while the leftmost portion of Q only attends to its corresponding leftmost portion of KV. As a result, Attention still scales with more devices but performs slightly worse than TP.
 
@@ -141,7 +143,7 @@ The high-level idea: perform only Attention computation in TP and everything els
 
 - For Ulysses, we perform an All-To-All after QKV projection where $N = \frac{B \times T \times (nq + nkv) \times d}{p}$ and another All-To-All where $N = \frac{B \times T \times H}{p}$.
 
-- Notice that per-device communication volume scales down roughly linearly with more devices. At $p = 4$, the ratio between Ulysses SP and TP is $\frac{2nq + nkv}{12nq}$. For GQA where $nkv << nq$, this ratio is *much* smaller than 1!
+- Notice that per-device communication volume scales down roughly linearly with more devices. At $p = 4$, the ratio between Ulysses SP and TP is $\frac{2nq + nkv}{12nq}$. For GQA where $nkv \ll nq$, this ratio is *much* smaller than 1!
 
 **Cons:** Ulysses cannot shard the sequence dimension beyond the number of KV heads, which is a deal breaker for MHA models where $nkv = 1$ or for GQA models where $nkv$ is substantially small.
 Ulysses has slightly higher communication overhead than Vanilla SP.
