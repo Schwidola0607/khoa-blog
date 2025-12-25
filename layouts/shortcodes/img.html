@@ -1,0 +1,2 @@
+<img src="{{ .Get 0 | relURL }}" alt="{{ .Get 1 | default "" }}" {{ with .Get 2 }}{{ . | safeHTML }}{{ end }}>
+
