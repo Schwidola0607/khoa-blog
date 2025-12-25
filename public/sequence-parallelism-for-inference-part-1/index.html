@@ -468,9 +468,13 @@ As a huge fan of low time-to-first-token (TTFT) long-sequence inference (motivat
 <h1 id="sequence-parallelism-variants">Sequence Parallelism variants</h1>
 <p>There are many SP variants. I&rsquo;ve created this semi-opinionated taxonomy to organize them.</p>
 <p><img src="/SP_taxonomy.png" alt="SP Taxonomy">
+
+
 As shown in the taxonomy, we&rsquo;ll focus on Vanilla SP, Megatron-style SP, and Ulysses SP.</p>
 <h2 id="vanilla-sequence-parallelism-or-context-parallelism">Vanilla Sequence Parallelism (or Context Parallelism)</h2>
 <p><img src="/SP.png" alt="Vanilla Sequence Parallelism">
+
+
 <strong>Pros</strong>: With Vanilla Sequence Parallelism, MLP and LN scale down roughly linearly with the number of devices since these operations now act on sharded input sequences.
 Furthermore, the communication overhead is significantly lower than TP:</p>
 <ul>
@@ -489,16 +493,22 @@ Furthermore, the communication overhead is significantly lower than TP:</p>
 <div style="display: flex; gap: 20px; justify-content: center;">
   <figure style="flex: 1; text-align: center;">
     <img src="/contiguous_sharding.png" alt="Contiguous sharding" style="max-width: 100%;">
+    
+
     <figcaption>Contiguous sharding</figcaption>
   </figure>
   <figure style="flex: 1; text-align: center;">
     <img src="/zigzag_sharding.png" alt="Zig-zag sharding" style="max-width: 100%;">
+    
+
     <figcaption>Zig-zag sharding</figcaption>
   </figure>
 </div>
 Approaches like this have a couple of pain points: (i) NCCL all-gather expects a contiguous tensor, and (ii) for more generalized masks (especially document masking), the sharding layout becomes quite complex.
 <h2 id="megatron-sequence-parallelism">Megatron Sequence Parallelism</h2>
 <p><img src="/megatron.png" alt="Megatron Sequence Parallelism">
+
+
 The high-level idea: perform Attention and MLP blocks in TP, and LayerNorm in SP. In detail:</p>
 <ol>
 <li>
@@ -543,6 +553,8 @@ The high-level idea: perform Attention and MLP blocks in TP, and LayerNorm in SP
 </ul>
 <p>Since we don&rsquo;t care about reducing activation memory, we can do even better for inference by eliminating one pair of All-Gather + Reduce-Scatter.</p>
 <p><img src="/megatron-sp-tp.png" alt="Megatron SP-TP">
+
+
 Instead of All-Gathering the sharded sequence after MLP-LN, we skip it and perform the MLP block on the sharded sequence. This eliminates a pair of All-Gather + Reduce-Scatter, cutting our communication overhead in half.</p>
 <p><strong>Pros:</strong> MLP, LN, and Attention all scale down ~linearly with the number of devices. Attention is head-parallel (no imbalance), while MLP and LN act on sharded input sequences. The communication overhead is ~1/2 that of TP—we only do one All-Gather + Reduce-Scatter compared to two All-Reduces.</p>
 <p><strong>Cons:</strong> Compared to Vanilla SP, Megatron SP has significantly higher communication volume</p>
@@ -556,6 +568,8 @@ Instead of All-Gathering the sharded sequence after MLP-LN, we skip it and perfo
 </ul>
 <h2 id="ulysses-sequence-parallelism">Ulysses Sequence Parallelism</h2>
 <p><img src="/ulysses.png" alt="Ulysses Sequence Parallelism">
+
+
 The high-level idea: perform only Attention computation in TP and everything else in SP. In detail:</p>
 <ol>
 <li>

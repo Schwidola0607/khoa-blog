@@ -77,12 +77,22 @@ jobs:
           key: hugo-${{ github.run_id }}
           restore-keys:
             hugo-
+      - name: Determine base URL
+        id: baseurl
+        run: |
+          if [ -f "static/CNAME" ]; then
+            CNAME=$(cat static/CNAME | tr -d '\n' | tr -d '\r')
+            echo "base_url=https://${CNAME}/" >> $GITHUB_OUTPUT
+          else
+            echo "base_url=${{ steps.pages.outputs.base_url }}/" >> $GITHUB_OUTPUT
+          fi
       - name: Build the site
         run: |
+          echo "Building with baseURL: ${{ steps.baseurl.outputs.base_url }}"
           hugo \
             --gc \
             --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/" \
+            --baseURL "${{ steps.baseurl.outputs.base_url }}" \
             --cacheDir "${{ runner.temp }}/hugo_cache"
       - name: Cache save
         id: cache-save

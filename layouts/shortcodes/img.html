@@ -1,2 +1,4 @@
-<img src="{{ .Get 0 | relURL }}" alt="{{ .Get 1 | default "" }}" {{ with .Get 2 }}{{ . | safeHTML }}{{ end }}>
+{{- $src := (.Get 0 | relURL) -}}
+{{- $alt := (.Get 1 | default "") -}}
+<img src="{{ $src }}" alt="{{ $alt }}"{{ with .Get 2 }} {{ . | safeHTMLAttr }}{{ end }}>
 

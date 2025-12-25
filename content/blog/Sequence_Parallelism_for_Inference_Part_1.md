@@ -44,12 +44,12 @@ To reduce TTFT, the first thought is to apply a higher degree of TP. During pref
 # Sequence Parallelism variants
 There are many SP variants. I've created this semi-opinionated taxonomy to organize them.
 
-![SP Taxonomy](/SP_taxonomy.png)
+{{< img "SP_taxonomy.png" "SP Taxonomy" >}}
 As shown in the taxonomy, we'll focus on Vanilla SP, Megatron-style SP, and Ulysses SP.
 
 ## Vanilla Sequence Parallelism (or Context Parallelism)
 
-![Vanilla Sequence Parallelism](/SP.png)
+{{< img "SP.png" "Vanilla Sequence Parallelism" >}}
 **Pros**: With Vanilla Sequence Parallelism, MLP and LN scale down roughly linearly with the number of devices since these operations now act on sharded input sequences. 
 Furthermore, the communication overhead is significantly lower than TP:
 - We only need 1 All-Gather compared to 2 All-Reduces
@@ -64,11 +64,11 @@ You can use load balancing algorithms to combat the attention imbalance. For str
 
 <div style="display: flex; gap: 20px; justify-content: center;">
   <figure style="flex: 1; text-align: center;">
-    <img src="/contiguous_sharding.png" alt="Contiguous sharding" style="max-width: 100%;">
+    {{< img "contiguous_sharding.png" "Contiguous sharding" "style=\"max-width: 100%;\"" >}}
     <figcaption>Contiguous sharding</figcaption>
   </figure>
   <figure style="flex: 1; text-align: center;">
-    <img src="/zigzag_sharding.png" alt="Zig-zag sharding" style="max-width: 100%;">
+    {{< img "zigzag_sharding.png" "Zig-zag sharding" "style=\"max-width: 100%;\"" >}}
     <figcaption>Zig-zag sharding</figcaption>
   </figure>
 </div>
@@ -76,7 +76,7 @@ Approaches like this have a couple of pain points: (i) NCCL all-gather expects a
 
 ## Megatron Sequence Parallelism
 
-![Megatron Sequence Parallelism](/megatron.png)
+{{< img "megatron.png" "Megatron Sequence Parallelism" >}}
 The high-level idea: perform Attention and MLP blocks in TP, and LayerNorm in SP. In detail:
 1. Shard the input sequence along the sequence dimension
 2. Attention LayerNorm acts on the sharded input sequence
@@ -104,7 +104,7 @@ Yes, but surprisingly this is *faster* than TP for prefill. While the communicat
 
 Since we don't care about reducing activation memory, we can do even better for inference by eliminating one pair of All-Gather + Reduce-Scatter.
 
-![Megatron SP-TP](/megatron-sp-tp.png)
+{{< img "megatron-sp-tp.png" "Megatron SP-TP" >}}
 Instead of All-Gathering the sharded sequence after MLP-LN, we skip it and perform the MLP block on the sharded sequence. This eliminates a pair of All-Gather + Reduce-Scatter, cutting our communication overhead in half.
 
 **Pros:** MLP, LN, and Attention all scale down ~linearly with the number of devices. Attention is head-parallel (no imbalance), while MLP and LN act on sharded input sequences. The communication overhead is ~1/2 that of TP—we only do one All-Gather + Reduce-Scatter compared to two All-Reduces.
@@ -117,7 +117,7 @@ Instead of All-Gathering the sharded sequence after MLP-LN, we skip it and perfo
 
 ## Ulysses Sequence Parallelism
 
-![Ulysses Sequence Parallelism](/ulysses.png)
+{{< img "ulysses.png" "Ulysses Sequence Parallelism" >}}
 The high-level idea: perform only Attention computation in TP and everything else in SP. In detail: 
 1. Shard the input sequence along the sequence dimension
 
