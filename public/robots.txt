@@ -1,2 +1,2 @@
 User-Agent: *
-Sitemap: https://schwidola0607.github.io/khoa-blog/sitemap.xml
+Sitemap: https://khoapham.blog/sitemap.xml

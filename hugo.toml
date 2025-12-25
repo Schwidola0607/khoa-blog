@@ -1,4 +1,4 @@
-baseURL = 'https://schwidola0607.github.io/khoa-blog/'
+baseURL = 'https://khoapham.blog/'
 languageCode = 'en-us'
 title = "Khoa's blog"
 theme = 'hugo-bearblog'

@@ -13,7 +13,7 @@ As a huge fan of low time-to-first-token (TTFT) long-sequence inference (motivat
 <meta name="keywords" content="" />
 
 
-<meta property="og:url" content="https://schwidola0607.github.io/khoa-blog/sequence-parallelism-for-inference-part-1/">
+<meta property="og:url" content="https://khoapham.blog/sequence-parallelism-for-inference-part-1/">
   <meta property="og:site_name" content="Khoa&#39;s blog">
   <meta property="og:title" content="Sequence Parallelism for Inference: Part 1">
   <meta property="og:description" content="Introduction Nd&#43; parallelism techniques are often invented for training first, then adapted for inference. Most techniques have seen great success in today’s inference world (both individually and together). However, Sequence Parallelism has not seen wide adoption in the open source world. If you look at vLLM or SGLang today, sequence parallelism is either in not-so-active development or completely deprioritized.
@@ -402,13 +402,13 @@ As a huge fan of low time-to-first-token (TTFT) long-sequence inference (motivat
 </head>
 
 <body>
-  <header><a href="/khoa-blog/" class="title">
+  <header><a href="/" class="title">
   <h2>Khoa&#39;s blog</h2>
 </a>
 <nav>
-<a href="/khoa-blog/about/">About</a>
+<a href="/about/">About</a>
 
-<a href="/khoa-blog/blog/">Blog</a>
+<a href="/blog/">Blog</a>
 
 </nav>
 </header>
@@ -467,10 +467,10 @@ As a huge fan of low time-to-first-token (TTFT) long-sequence inference (motivat
 <p><strong>For latency-sensitive applications, this is simply not good enough. The solution is, as you&rsquo;ve guessed from the title, Sequence Parallelism (and friends)!</strong></p>
 <h1 id="sequence-parallelism-variants">Sequence Parallelism variants</h1>
 <p>There are many SP variants. I&rsquo;ve created this semi-opinionated taxonomy to organize them.</p>
-<p><img src="/khoa-blog/SP_taxonomy.png" alt="SP Taxonomy">
+<p><img src="/SP_taxonomy.png" alt="SP Taxonomy">
 As shown in the taxonomy, we&rsquo;ll focus on Vanilla SP, Megatron-style SP, and Ulysses SP.</p>
 <h2 id="vanilla-sequence-parallelism-or-context-parallelism">Vanilla Sequence Parallelism (or Context Parallelism)</h2>
-<p><img src="/khoa-blog/SP.png" alt="Vanilla Sequence Parallelism">
+<p><img src="/SP.png" alt="Vanilla Sequence Parallelism">
 <strong>Pros</strong>: With Vanilla Sequence Parallelism, MLP and LN scale down roughly linearly with the number of devices since these operations now act on sharded input sequences.
 Furthermore, the communication overhead is significantly lower than TP:</p>
 <ul>
@@ -488,17 +488,17 @@ Furthermore, the communication overhead is significantly lower than TP:</p>
 <p>You can use load balancing algorithms to combat the attention imbalance. For strictly causal masks, one notable approach is zig-zag attention.</p>
 <div style="display: flex; gap: 20px; justify-content: center;">
   <figure style="flex: 1; text-align: center;">
-    <img src="/khoa-blog/contiguous_sharding.png" alt="Contiguous sharding" style="max-width: 100%;">
+    <img src="/contiguous_sharding.png" alt="Contiguous sharding" style="max-width: 100%;">
     <figcaption>Contiguous sharding</figcaption>
   </figure>
   <figure style="flex: 1; text-align: center;">
-    <img src="/khoa-blog/zigzag_sharding.png" alt="Zig-zag sharding" style="max-width: 100%;">
+    <img src="/zigzag_sharding.png" alt="Zig-zag sharding" style="max-width: 100%;">
     <figcaption>Zig-zag sharding</figcaption>
   </figure>
 </div>
 Approaches like this have a couple of pain points: (i) NCCL all-gather expects a contiguous tensor, and (ii) for more generalized masks (especially document masking), the sharding layout becomes quite complex.
 <h2 id="megatron-sequence-parallelism">Megatron Sequence Parallelism</h2>
-<p><img src="/khoa-blog/megatron.png" alt="Megatron Sequence Parallelism">
+<p><img src="/megatron.png" alt="Megatron Sequence Parallelism">
 The high-level idea: perform Attention and MLP blocks in TP, and LayerNorm in SP. In detail:</p>
 <ol>
 <li>
@@ -542,7 +542,7 @@ The high-level idea: perform Attention and MLP blocks in TP, and LayerNorm in SP
 </li>
 </ul>
 <p>Since we don&rsquo;t care about reducing activation memory, we can do even better for inference by eliminating one pair of All-Gather + Reduce-Scatter.</p>
-<p><img src="/khoa-blog/megatron-sp-tp.png" alt="Megatron SP-TP">
+<p><img src="/megatron-sp-tp.png" alt="Megatron SP-TP">
 Instead of All-Gathering the sharded sequence after MLP-LN, we skip it and perform the MLP block on the sharded sequence. This eliminates a pair of All-Gather + Reduce-Scatter, cutting our communication overhead in half.</p>
 <p><strong>Pros:</strong> MLP, LN, and Attention all scale down ~linearly with the number of devices. Attention is head-parallel (no imbalance), while MLP and LN act on sharded input sequences. The communication overhead is ~1/2 that of TP—we only do one All-Gather + Reduce-Scatter compared to two All-Reduces.</p>
 <p><strong>Cons:</strong> Compared to Vanilla SP, Megatron SP has significantly higher communication volume</p>
@@ -555,7 +555,7 @@ Instead of All-Gathering the sharded sequence after MLP-LN, we skip it and perfo
 </li>
 </ul>
 <h2 id="ulysses-sequence-parallelism">Ulysses Sequence Parallelism</h2>
-<p><img src="/khoa-blog/ulysses.png" alt="Ulysses Sequence Parallelism">
+<p><img src="/ulysses.png" alt="Ulysses Sequence Parallelism">
 The high-level idea: perform only Attention computation in TP and everything else in SP. In detail:</p>
 <ol>
 <li>
