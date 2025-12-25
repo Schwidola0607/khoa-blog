@@ -57,7 +57,7 @@ As shown in the taxonomy, we'll focus on Vanilla SP, Megatron-style SP, and Ulys
 Furthermore, the communication overhead is significantly lower than TP:
 - We only need 1 All-Gather compared to 2 All-Reduces
 
-- For Ring All-Gather, the per-device communication volume is $\frac{ \times (p - 1) \times N }{p}$
+- For Ring All-Gather, the per-device communication volume is $\frac{(p - 1) \times N }{p}$
 
 - In this case, $N = B \times T \times 2nkv \times d$. For GQA, $nkv \times d << H = nq \times d$
 
