@@ -37,7 +37,10 @@ The idea sounds simple enough, but in reality there are *many* sequence parallel
 # Why is Tensor Parallelism (TP) not good enough?
 To reduce TTFT, the first thought is to apply a higher degree of TP. During prefill, as we increase TP degree, both attention computation and MLP scale down roughly linearly. However: 
 1. LayerNorm computation does not scale with more devices
+- LN is a point-wise operation on input activation, which is not sharded during TP. Moreover, when we say LN scales, it's not computation that scales but rather memory I/O. Point-wise operations are more memory bandwidth-bounded than compute-bounded. Shorter sequence length means less I/O during LN
 2. All-Reduce communication volume increases with more devices
+- For ring-based All-Reduce, the per-device communication volume is $\frac{2 \times (p - 1) \times N }{p}$. As TP degree grows, this volume increases by 1x (TP=2), 1.5x (TP=4), and 1.75x (TP=8)
+- Furthermore, we have to do 2 All-Reduces during TP, one after output projection (O proj) and another after ffn2 (or shrink), both of which have $N = B \times T \times H$
 
 **For latency-sensitive applications, this is simply not good enough. The solution is, as you've guessed from the title, Sequence Parallelism (and friends)!**
 
@@ -54,9 +57,9 @@ As shown in the taxonomy, we'll focus on Vanilla SP, Megatron-style SP, and Ulys
 Furthermore, the communication overhead is significantly lower than TP:
 - We only need 1 All-Gather compared to 2 All-Reduces
 
-- For Ring All-Gather, the per-device communication volume is $\frac{2 \times (p - 1) \times N }{p}$
+- For Ring All-Gather, the per-device communication volume is $\frac{ \times (p - 1) \times N }{p}$
 
-- However, in this case, $N = B \times T \times 2nkv \times d$. For GQA, $2nkv \times d << H = nq \times d$
+- In this case, $N = B \times T \times 2nkv \times d$. For GQA, $nkv \times d << H = nq \times d$
 
 **Cons**: Vanilla Sequence Parallelism introduces attention computation imbalance. The rightmost portion of Q must attend to *all* of KV, while the leftmost portion of Q only attends to its corresponding leftmost portion of KV. As a result, Attention still scales with more devices but performs slightly worse than TP.
 
