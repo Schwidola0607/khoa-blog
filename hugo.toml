@@ -23,3 +23,7 @@ enableRobotsTXT = true
         [markup.goldmark.extensions.passthrough.delimiters]
           block = [['\[', '\]'], ['$$', '$$']]
           inline = [['\(', '\)'], ['$', '$']]
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
